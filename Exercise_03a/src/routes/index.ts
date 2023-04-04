@@ -1,43 +1,36 @@
 import { Request, Response, Router } from "express";
-import { products } from "../db/db";
+import productsService from "../service/products.service";
+
 const router = Router();
 
 router.get("/", (req: Request, res: Response) => {
-  res.send(products);
+  productsService.getAll();
 });
 
 router.post("/", (req: Request, res: Response) => {
-  const body = req.body;
-  if (!body) {
-    res.status(400).send({ message: "Dados inválidos para cadastro!" });
-  } else {
-    products.push(body);
+  try {
+    productsService.createProduct(req.body);
     res.status(201).send({ message: "Produto cadastrado com sucesso" });
+  } catch (error: any) {
+    res.status(400).send({ message: error.message });
   }
 });
 
 router.put("/:id", (req: Request, res: Response) => {
-  const body = req.body;
-  const product = products.findIndex(
-    (product) => product.id === JSON.parse(req.params.id)
-  );
-  if (product === -1) {
-    res.status(400).send({ message: "Dados inválidos para atualizar!" });
-  } else {
-    products[product] = body;
+  try {
+    productsService.updateProduct(req.params.document, req.body);
     res.status(200).send({ message: "Produto atualizado com sucesso!" });
+  } catch (error: any) {
+    res.status(400).send({ message: error.message });
   }
 });
 
 router.delete("/:id", (req: Request, res: Response) => {
-  const product = products.findIndex(
-    (product) => product.id === JSON.parse(req.params.id)
-  );
-  if (product === -1) {
-    res.status(400).send({ message: "Dados inválidos para exclusão!" });
-  } else {
-    products.splice(product, 1);
+  try {
+    productsService.deleteProduct(req.params.document);
     res.status(200).send({ message: "Produto excluído com sucesso!" });
+  } catch (error: any) {
+    res.status(400).send({ message: error.message });
   }
 });
 
