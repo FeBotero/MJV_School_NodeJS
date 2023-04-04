@@ -41,7 +41,6 @@ class productService {
       quantity: 2,
     },
   ];
-
   getAll() {
     return this.products;
   }
@@ -53,18 +52,18 @@ class productService {
     this.products.push(body);
   }
   deleteProduct(id: string) {
-    const productIndex = this.products.findIndex((student) => student.id == id);
+    const productIndex = this.products.findIndex((product) => product.id == id);
     if (productIndex === -1) {
       throw new Error("Produto não encontrado!");
     }
     this.products.splice(productIndex, 1);
   }
   updateProduct(id: string, body: Product) {
-    const studentIndex = this.products.findIndex((product) => product.id == id);
-    if (studentIndex === -1) {
-      throw new Error("Estudante não encontrado!");
+    const productIndex = this.products.findIndex((product) => product.id == id);
+    if (productIndex === -1) {
+      throw new Error("Produto não encontrado!");
     }
-    this.products[studentIndex] = body;
+    this.products[productIndex] = body;
   }
 }
 
